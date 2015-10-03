@@ -1,0 +1,8 @@
+- name: install ambari prerequisites
+  yum: name={{ item }} state=present
+  with_items:
+  - ntp
+  - wget
+  - httpd
+  tags:
+  - ambari-base

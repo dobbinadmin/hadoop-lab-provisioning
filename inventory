@@ -1,0 +1,2 @@
+ambari ansible_ssh_host=192.168.1.110 ansible_ssh_port=22
+hdpa ansible_ssh_host=192.168.1.111 ansible_ssh_port=22

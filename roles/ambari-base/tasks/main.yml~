@@ -1,0 +1,69 @@
+- name: install ambari prerequisites
+  yum: name={{ item }} state=present
+  with_items:
+  - ntp
+  - wget
+  - httpd
+  tags:
+  - ambari-base
+
+- name: create the hosts file for all machines
+  template: src=hosts.j2 dest=/etc/hosts owner=root group=root mode=0644
+  tags:
+  - ambari-base
+
+- name: make services autotstart at boot
+  shell: chkconfig {{ item }} on
+  with_items:
+  - ntpd
+  - httpd
+  tags:
+  - ambari-base
+
+- name: start services
+  service: name={{ item }} state=started
+  with_items:
+  - ntpd
+  - httpd
+  tags:
+  - ambari-base
+
+- name: stop iptables service
+  service: name={{ item }} state=stopped
+  with_items:
+  - iptables
+  tags:
+  - ambari-base
+
+- name: Get some ssh keys
+  shell: ssh-keygen
+  tags:
+  - ambari-base
+
+- name: copy local ssh key to the outside so we can use it
+  copy: src=~/.ssh/id_rsa dest=/vagrant/ 
+  tags:
+  - ambari-base
+
+- name: Put the ssh key in authorized_keys
+  shell: cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys 
+  tags:
+  - ambari-base
+
+- name: download ambari repo
+  get_url: url=http://public-repo-1.hortonworks.com/ambari/centos6/1.x/updates/1.4.3.38/ambari.repo dest=/etc/yum.repos.d/
+
+- name: install ambari server
+  yum: name={{ item }} state=present
+  with_items:
+  - ambari-server
+  tags:
+  - ambari-base
+
+- name: Configure and start ambari server
+  shell: {{ item }}
+  with_items:
+  - ambari-server setup
+  - ambari-server start
+  tags:
+  - ambari-base

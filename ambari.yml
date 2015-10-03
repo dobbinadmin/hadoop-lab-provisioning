@@ -1,0 +1,13 @@
+- hosts: ambari
+  gather_facts: yes
+
+  roles:
+  - ambari-base
+  - ambari-agent
+
+- hosts: hdpa
+  gather_facts: yes
+
+  roles:
+  - hdp-base
+  - ambari-agent
