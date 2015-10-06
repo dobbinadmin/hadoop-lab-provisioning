@@ -5,7 +5,13 @@
   - ambari-base
   - ambari-agent
 
-- hosts: hdpa
+- hosts: 
+  - hdpa
+  - hdpb
+  - hdpc
+  - hdpd
+  - hdpe
+  - hdpf
   gather_facts: yes
 
   roles:
