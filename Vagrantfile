@@ -1,6 +1,46 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+boxes = [
+         {
+           :name => "hdpa",
+           :eth1 => "192.168.1.111",
+           :mem => "10240",
+           :cpu => "2"
+         },
+         {
+           :name => "hdpb",
+           :eth1 => "192.168.1.112",
+           :mem => "10240",
+           :cpu => "2"
+         },
+         {
+           :name => "hdpc",
+           :eth1 => "192.168.1.113",
+           :mem => "10240",
+           :cpu => "2"
+         },
+         {
+           :name => "hdpd",
+           :eth1 => "192.168.1.114",
+           :mem => "10240",
+           :cpu => "2"
+         },
+         {
+           :name => "hdpe",
+           :eth1 => "192.168.1.115",
+           :mem => "10240",
+           :cpu => "2"
+         },
+         {
+           :name => "hdpf",
+           :eth1 => "192.168.1.116",
+           :mem => "10240",
+           :cpu => "2"
+         },
+
+        ]
+
 Vagrant.configure(2) do |config|
 
   config.vm.define "ambari" do |ambari|
@@ -14,72 +54,27 @@ Vagrant.configure(2) do |config|
     end
   end
 
-  config.vm.define "hdpa" do |hdpa|
-    hdpa.vm.box = "hdp_vm"
-    hdpa.vm.hostname = "hdpa"
-    hdpa.vm.network "public_network", ip: "192.168.1.111", bridge: "eth2"
+  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
 
-    hdpa.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
-      vb.cpus = 2
+  boxes.each do |opts|
+    config.vm.define opts[:name] do |v|
+      v.vm.box = "hdp_vm"
+      v.vm.hostname =  opts[:name]
+      v.vm.network "public_network", ip: :eth1, bridge: "eth2"
+      
+      v.vm.provider "virtualbox" do |vb|
+        vb.memory = opts[:mem]
+        vb.cpus = opts[:cpu]
+      end
     end
   end
-  config.vm.define "hdpb" do |hdpb|
-    hdpb.vm.box = "hdp_vm"
-    hdpb.vm.hostname = "hdpb"
-    hdpb.vm.network "public_network", ip: "192.168.1.112", bridge: "eth2"
-
-    hdpb.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
-      vb.cpus = 2
-    end
-  end
-  config.vm.define "hdpc" do |hdpc|
-    hdpc.vm.box = "hdp_vm"
-    hdpc.vm.hostname = "hdpc"
-    hdpc.vm.network "public_network", ip: "192.168.1.113", bridge: "eth2"
-
-    hdpc.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
-      vb.cpus = 2
-    end
-  end
-  config.vm.define "hdpd" do |hdpd|
-    hdpd.vm.box = "hdp_vm"
-    hdpd.vm.hostname = "hdpd"
-    hdpd.vm.network "public_network", ip: "192.168.1.114", bridge: "eth2"
-
-    hdpd.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
-      vb.cpus = 2
-    end
-  end
-  config.vm.define "hdpe" do |hdpe|
-    hdpe.vm.box = "hdp_vm"
-    hdpe.vm.hostname = "hdpe"
-    hdpe.vm.network "public_network", ip: "192.168.1.115", bridge: "eth2"
-
-    hdpe.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
-      vb.cpus = 2
-    end
-  end
-  config.vm.define "hdpf" do |hdpf|
-    hdpf.vm.box = "hdp_vm"
-    hdpf.vm.hostname = "hdpf"
-    hdpf.vm.network "public_network", ip: "192.168.1.116", bridge: "eth2"
-
-    hdpf.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
-      vb.cpus = 2
-    end
-  end
-
+     
   # Ansible provisioner.
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "ambari.yml"
     ansible.inventory_path = "inventory"
     ansible.sudo = true
+    ansible.raw_ssh_args = ['-o IdentitiesOnly=yes']
   end
 
 end
