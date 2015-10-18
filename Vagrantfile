@@ -49,18 +49,16 @@ Vagrant.configure(2) do |config|
     ambari.vm.network "public_network", ip: "192.168.1.110", bridge: "eth2"
     ambari.vm.network "forwarded_port", guest: 8080, host: 8081 
     ambari.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
+      vb.memory = "8096"
       vb.cpus = 2
     end
   end
-
-  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
 
   boxes.each do |opts|
     config.vm.define opts[:name] do |v|
       v.vm.box = "hdp_vm"
       v.vm.hostname =  opts[:name]
-      v.vm.network "public_network", ip: :eth1, bridge: "eth2"
+      v.vm.network "public_network", ip: opts[:eth1], bridge: "eth2"
       
       v.vm.provider "virtualbox" do |vb|
         vb.memory = opts[:mem]
@@ -74,7 +72,7 @@ Vagrant.configure(2) do |config|
     ansible.playbook = "ambari.yml"
     ansible.inventory_path = "inventory"
     ansible.sudo = true
-    ansible.raw_ssh_args = ['-o IdentitiesOnly=yes']
+#    ansible.raw_ssh_args = ['-o IdentitiesOnly=yes']
   end
 
 end
