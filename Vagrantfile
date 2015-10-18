@@ -75,6 +75,7 @@ Vagrant.configure(2) do |config|
     ansible.inventory_path = "inventory"
     ansible.sudo = true
     ansible.raw_ssh_args = ['-o IdentitiesOnly=yes']
+    ansible.limit = 'all'
   end
 
 end
