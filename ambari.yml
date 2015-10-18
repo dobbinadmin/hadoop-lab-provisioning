@@ -1,19 +1,15 @@
-- hosts: ambari
+- name: Ambari server
+  hosts: ambari
+  accelerate: True
   gather_facts: yes
-
   roles:
   - ambari-base
   - ambari-agent
 
-- hosts: 
-  - hdpa
-  - hdpb
-  - hdpc
-  - hdpd
-  - hdpe
-  - hdpf
+- name: Nodes
+  accelerate: True
+  hosts: all
   gather_facts: yes
-
   roles:
   - hdp-base
   - ambari-agent

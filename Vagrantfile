@@ -72,7 +72,9 @@ Vagrant.configure(2) do |config|
     ansible.playbook = "ambari.yml"
     ansible.inventory_path = "inventory"
     ansible.sudo = true
-#    ansible.raw_ssh_args = ['-o IdentitiesOnly=yes']
+    ansible.raw_ssh_args = ['-o IdentitiesOnly=yes']
+    ansible.limit = 'all'
+>>>>>>> 95677f87f312c0c61f8a5a0fda719b4db19f8d03
   end
 
 end
