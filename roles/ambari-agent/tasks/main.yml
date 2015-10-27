@@ -1,3 +1,5 @@
+#- user: name=root generate_ssh_key=yes ssh_key_bits=2048 ssh_key_file=.ssh/id_rsa
+
 - name: download ambari repo
   get_url: url=http://public-repo-1.hortonworks.com/ambari/centos6/1.x/updates/1.4.3.38/ambari.repo dest=/etc/yum.repos.d/
 
