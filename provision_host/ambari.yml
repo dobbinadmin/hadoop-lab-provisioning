@@ -1,0 +1,8 @@
+
+- name: Setup Host
+  hosts: localhost
+  gather_facts: yes
+  sudo: yes
+  roles:
+  - setup-base
+

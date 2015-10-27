@@ -1,0 +1,20 @@
+# TODO:
+# We need to add these items
+
+# install vagrant
+# import box:
+# vagrant box add hdp_vm https://github.com/2creatives/vagrant-centos/releases/download/v6.5.1/centos65-x86_64-20131205.box
+# vagrant plugin install vagrant-hostsupdater
+# install ansible
+# Configure disks with soft-links so that we can add such disks to the VMs.
+# Use vagrant to configure virtualbox to use these disks.
+
+- name: install commonly used packages
+  yum: name={{ item }} state=present
+  with_items:
+  - wget
+  - emacs
+  - sshpass
+  tags:
+  - host-setup
+

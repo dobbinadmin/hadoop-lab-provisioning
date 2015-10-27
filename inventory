@@ -1,7 +1,10 @@
-ambari ansible_ssh_host=192.168.1.110 ansible_ssh_port=22
-hdpa ansible_ssh_host=192.168.1.111 ansible_ssh_port=22
-hdpb ansible_ssh_host=192.168.1.112 ansible_ssh_port=22
-hdpc ansible_ssh_host=192.168.1.113 ansible_ssh_port=22
-hdpd ansible_ssh_host=192.168.1.114 ansible_ssh_port=22
-hdpe ansible_ssh_host=192.168.1.115 ansible_ssh_port=22
-hdpf ansible_ssh_host=192.168.1.116 ansible_ssh_port=22
+[ambari]
+ambari.hdp.dev ansible_ssh_host=192.168.1.110 ansible_ssh_port=22
+
+[nodes]
+hdpa.hdp.dev ansible_ssh_host=192.168.1.111 ansible_ssh_port=22
+hdpb.hdp.dev ansible_ssh_host=192.168.1.112 ansible_ssh_port=22
+hdpc.hdp.dev ansible_ssh_host=192.168.1.113 ansible_ssh_port=22
+hdpd.hdp.dev ansible_ssh_host=192.168.1.114 ansible_ssh_port=22
+hdpe.hdp.dev ansible_ssh_host=192.168.1.115 ansible_ssh_port=22
+hdpf.hdp.dev ansible_ssh_host=192.168.1.116 ansible_ssh_port=22

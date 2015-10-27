@@ -1,1 +1,1 @@
-ansible-playbook -i inventory ambari.yml -u root -k -vvv
+ansible-playbook -i inventory ambari.yml -u root

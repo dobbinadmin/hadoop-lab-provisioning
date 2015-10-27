@@ -18,12 +18,12 @@ Vagrant.configure(2) do |config|
   }.each do |short_name, ip|
     config.vm.define short_name do |host|
       host.vm.network 'public_network', ip: ip, bridge: "eth2"
-      host.vm.hostname = "#{short_name}.dev"
+      host.vm.hostname = "#{short_name}.hdp.dev"
 
-      #host.vm.provider "virtualbox" do |vb|
-      #  vb.memory = "8096"
-      #  vb.cpus = "2"
-      #end
+      host.vm.provider "virtualbox" do |vb|
+        vb.memory = "8096"
+        vb.cpus = "2"
+      end
     end
   end
 

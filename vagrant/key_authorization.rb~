@@ -1,4 +1,3 @@
-# script originally from http://hakunin.com/six-ansible-practices
 def authorize_key_for_root(config, *key_paths)
   [*key_paths, nil].each do |key_path|
     if key_path.nil?
@@ -8,7 +7,11 @@ def authorize_key_for_root(config, *key_paths)
     full_key_path = File.expand_path(key_path)
 
     if File.exists?(full_key_path)
-      
+      config.vm.provision 'shell',
+        privileged: true,
+        run: 'once',
+        inline: "mkdir -p /home/vagrant"
+
       config.vm.provision 'file',
         run: 'once',
         source: full_key_path,
@@ -20,7 +23,6 @@ def authorize_key_for_root(config, *key_paths)
         inline:
           "echo \"Creating /root/.ssh/authorized_keys with #{key_path}\" && " +
           'rm -f /root/.ssh/authorized_keys && ' +
-          'mkdir -p /root/.ssh && ' +
           'mv /home/vagrant/root_pubkey /root/.ssh/authorized_keys && ' +
           'chown root:root /root/.ssh/authorized_keys && ' +
           'chmod 600 /root/.ssh/authorized_keys && ' +
