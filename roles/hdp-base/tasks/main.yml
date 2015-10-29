@@ -8,11 +8,6 @@
   tags:
   - hdp-base
 
-- name: create the hosts file for all machines
-  template: src=hosts.j2 dest=/etc/hosts owner=root group=root mode=0644
-  tags:
-  - hdp-base
-
 - name: stop iptables service
   service: name={{ item }} state=stopped
   with_items:

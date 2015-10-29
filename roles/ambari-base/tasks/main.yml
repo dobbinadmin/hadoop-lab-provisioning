@@ -12,11 +12,6 @@
   tags:
   - ambari-base
 
-#- name: create the hosts file for all machines
-#  template: src=hosts.j2 dest=/etc/hosts owner=root group=root mode=0644
-#  tags:
-#  - ambari-base
-
 - name: make services autotstart at boot
   shell: chkconfig {{ item }} on
   with_items:
