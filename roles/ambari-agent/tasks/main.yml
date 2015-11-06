@@ -1,17 +1,8 @@
-#- user: name=root generate_ssh_key=yes ssh_key_bits=2048 ssh_key_file=.ssh/id_rsa
-
 - name: download ambari repo
   get_url: url=http://public-repo-1.hortonworks.com/ambari/centos6/1.x/updates/1.4.3.38/ambari.repo dest=/etc/yum.repos.d/
 
 - name: install ambari-agent
   yum: name=ambari-agent state=latest
-  tags:
-  - ambari-agent
-
-- name: install ntpd
-  yum: name=ntp state=latest
-  tags:
-  - ambari-agent
 
 - name: Configure ambari-server hostname in ambari-agent configuration
   lineinfile: dest=/etc/ambari-agent/conf/ambari-agent.ini regexp=^.*hostname=.*$ line=hostname="{{ item }}" backup=yes
@@ -20,31 +11,10 @@
   tags:
   - ambari-agent
 
-- name: create the hosts file for all machines
-  template: src=hosts.j2 dest=/etc/hosts owner=root group=root mode=0644
-  tags:
-  - ambari-agent
-
-
 - name: Ensure ambari-agent is running and enabled
   service: name=ambari-agent state=restarted enabled=yes
   tags:
   - ambari-agent
-
-- name: Disable iptables
-  service: name={{ item }} state=stopped enabled=no
-  with_items:
-  - iptables
-  tags:
-  - ambari-agent
-
-- name: Start NTPD
-  service: name={{ item }} state=started enabled=yes
-  with_items:
-  - ntp
-  tags:
-  - ambari-agent
-
 
 - name : wait for agent to register
   command : sleep 10

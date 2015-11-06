@@ -15,20 +15,21 @@
   tasks:
     - authorized_key: user=vagrant key="{{ lookup('file', '/home/ph/.ssh/id_rsa.pub') }}"
 
+- name: Nodes
+#  accelerate: True
+  hosts: all
+  gather_facts: yes
+  sudo: yes
+  roles:
+  - common
+  - ambari-agent
+
 - name: Ambari server
   hosts: ambari
+#  accelerate: True
   gather_facts: yes
   sudo: yes
   roles:
+  - ambari-server
   - ambari-agent
-  - ambari-base
-
-
-- name: Nodes
-  hosts: nodes
-  gather_facts: yes
-  sudo: yes
-  roles:
-  - ambari-agent
-  - hdp-base
 
