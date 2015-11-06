@@ -17,6 +17,9 @@ Vagrant.configure(2) do |config|
     'hdpf' => '192.168.1.116',
   }.each do |short_name, ip|
     config.vm.define short_name do |host|
+      if "#{short_name}" == "ambari"
+        host.vm.network "forwarded_port", guest: 8080, host: 8081
+      end
       host.vm.network 'public_network', ip: ip, bridge: "eth2"
       host.vm.hostname = "#{short_name}.hdp.dev"
 

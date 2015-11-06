@@ -5,6 +5,13 @@
 
 - name: install ambari-agent
   yum: name=ambari-agent state=latest
+  tags:
+  - ambari-agent
+
+- name: install ntpd
+  yum: name=ntp state=latest
+  tags:
+  - ambari-agent
 
 - name: Configure ambari-server hostname in ambari-agent configuration
   lineinfile: dest=/etc/ambari-agent/conf/ambari-agent.ini regexp=^.*hostname=.*$ line=hostname="{{ item }}" backup=yes
@@ -25,9 +32,19 @@
   - ambari-agent
 
 - name: Disable iptables
-  service: name=iptables state=stopped enabled=no
+  service: name={{ item }} state=stopped enabled=no
+  with_items:
+  - iptables
   tags:
   - ambari-agent
+
+- name: Start NTPD
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+  - ntp
+  tags:
+  - ambari-agent
+
 
 - name : wait for agent to register
   command : sleep 10
